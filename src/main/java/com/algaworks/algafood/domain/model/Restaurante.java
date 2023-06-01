@@ -1,8 +1,18 @@
 package com.algaworks.algafood.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+@Data
 @Entity
 public class Restaurante {
 
@@ -10,31 +20,45 @@ public class Restaurante {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String nome;
 
+    @Column(nullable = false)
     private BigDecimal taxaFrete;
 
-    public Long getId() {
-        return id;
-    }
+    @JsonIgnore
+    @CreationTimestamp
+    @Column(nullable = false, columnDefinition = "datetime")
+    private LocalDateTime dataCadastro;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @JsonIgnore
+    @UpdateTimestamp
+    @Column(nullable = false, columnDefinition = "datetime")
+    private LocalDateTime dataAtualizacao;
 
-    public String getNome() {
-        return nome;
-    }
+//    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer"})
+    @JoinColumn(name = "cozinha_id", nullable = false)
+    private Cozinha cozinha;
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+    @JsonIgnore
+    @Embedded
+    private Endereco endereco;
 
-    public BigDecimal getTaxaFrete() {
-        return taxaFrete;
-    }
+//    @JsonIgnore
+    @ManyToMany
+    @JoinTable(name = "restaurante_formas_pagamento",
+            joinColumns = @JoinColumn(name = "restaurante_id"),
+            inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id")
+    )
+    private List<FormaPagamento> formasPagamento = new ArrayList<>();
 
-    public void setTaxaFrete(BigDecimal taxaFrete) {
-        this.taxaFrete = taxaFrete;
-    }
+    @JsonIgnore
+    @OneToMany(mappedBy = "restaurante")
+    private List<Produto> produtos;
+
+    @OneToMany(mappedBy = "restaurante")
+    private List<Pedido> pedidos;
+
 }

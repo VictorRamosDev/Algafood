@@ -3,27 +3,25 @@ package com.algaworks.algafood.domain.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Objects;
 
 @Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class Cozinha {
+public class Estado {
 
-    @Id
     @EqualsAndHashCode.Include
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String nome;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "cozinha")
-    private List<Restaurante> restaurantes;
+    @OneToMany(mappedBy = "estado")
+    private List<Cidade> cidades;
 
 }

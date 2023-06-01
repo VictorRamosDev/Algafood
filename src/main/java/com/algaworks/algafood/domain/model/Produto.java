@@ -3,17 +3,14 @@ package com.algaworks.algafood.domain.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Objects;
 
 @Data
 @Entity
-public class Cozinha {
+public class Produto {
 
     @Id
     @EqualsAndHashCode.Include
@@ -22,8 +19,17 @@ public class Cozinha {
 
     private String nome;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "cozinha")
-    private List<Restaurante> restaurantes;
+    private String descricao;
 
+    private BigDecimal preco;
+
+    private boolean ativo;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "restaurante_id")
+    private Restaurante restaurante;
+
+    @OneToMany(mappedBy = "produto")
+    private List<ItemPedido> itensPedido;
 }
