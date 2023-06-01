@@ -17,43 +17,18 @@ import java.util.List;
 @Service
 public class CadastroCidadeService {
 
-    @Autowired
-    private CidadeRepository cidadeRepository;
+    public static final String MSG_CIDADE_NAO_ENCONTRADA = "Cidade de código %d não encontrado.";
+    public static final String MSG_CIDADE_EM_USO = "Cidade de código %d não pode ser removido, pois está em uso.";
 
     @Autowired
-    private EstadoRepository estadoRepository;
+    private CidadeRepository cidadeRepository;
 
     public List<Cidade> list() {
         return cidadeRepository.findAll();
     }
 
     public Cidade getSingleton(Long cidadeId) {
-        return cidadeRepository.findById(cidadeId).orElseThrow(
-                () -> new EntidadeNaoEncontradaException(
-                        String.format("Cidade de código %d não encontrado.", cidadeId)
-                )
-        );
-    }
-
-    public Cidade salvar(Cidade cidade) {
-        Estado estado = cidade.getEstado();
-        if (estado != null) {
-            Estado estadoExistente = estadoRepository.findByNome(estado.getNome()).orElse(null);
-            if (estadoExistente == null) {
-                estadoExistente = estadoRepository.save(estado);
-                cidade.setEstado(estadoExistente);
-            }
-        }
-        return cidadeRepository.save(cidade);
-    }
-
-    public Cidade atualizar(Long cidadeId, Cidade cidade) {
-        Cidade cidadeAtual = cidadeRepository.findById(cidadeId).orElseThrow(() -> new EntidadeNaoEncontradaException(
-                String.format("A cidade de código %d não foi encontrado.", cidadeId)
-        ));
-
-        BeanUtils.copyProperties(cidade, cidadeAtual, "id");
-        return cidadeRepository.save(cidadeAtual);
+        return buscarOuFalhar(cidadeId);
     }
 
     public void remover(Long cidadeId) {
@@ -61,12 +36,21 @@ public class CadastroCidadeService {
             cidadeRepository.deleteById(cidadeId);
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(
-                    String.format("Cidade de código %d não pode ser removido, pois está em uso.", cidadeId)
+                    String.format(MSG_CIDADE_EM_USO, cidadeId)
             );
         } catch (EmptyResultDataAccessException e) {
             throw new EntidadeNaoEncontradaException(
-                    String.format("Cidade de código %d não foi encontrado.", cidadeId)
+                    String.format(MSG_CIDADE_NAO_ENCONTRADA, cidadeId)
             );
         }
     }
+
+    public Cidade buscarOuFalhar(Long cidadeId) {
+        return cidadeRepository.findById(cidadeId).orElseThrow(
+                () -> new EntidadeNaoEncontradaException(
+                        String.format(MSG_CIDADE_NAO_ENCONTRADA, cidadeId)
+                )
+        );
+    }
+
 }

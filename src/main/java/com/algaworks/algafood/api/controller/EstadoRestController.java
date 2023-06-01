@@ -29,8 +29,8 @@ public class EstadoRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Estado> salvar(@RequestBody Estado estado) {
-        return ResponseEntity.ok(cadastroEstadoService.salvar(estado));
+    public Estado salvar(@RequestBody Estado estado) {
+        return cadastroEstadoService.salvar(estado);
     }
 
     @PutMapping("/{estadoId}")
