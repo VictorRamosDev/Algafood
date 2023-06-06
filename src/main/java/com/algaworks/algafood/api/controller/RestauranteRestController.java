@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.controller;
 
+import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
@@ -64,19 +65,18 @@ public class RestauranteRestController {
     }
 
     @PutMapping("/{restauranteId}")
-    public Restaurante atualizar(@PathVariable("restauranteId") Long restauranteId, @RequestBody Restaurante entityDTO)
-            throws RuntimeException{
-        Restaurante restauranteAtual = cadastroRestauranteService.buscarOuFalhar(restauranteId);
-        BeanUtils.copyProperties(entityDTO, restauranteAtual, "id", "formasPagamento", "dataCadastro");
-
+    public Restaurante atualizar(@PathVariable("restauranteId") Long restauranteId, @RequestBody Restaurante restaurante)
+            throws RuntimeException {
         try {
-            Cozinha cozinha = cadastroCozinhaService.buscarOuFalhar(entityDTO.getCozinha().getId());
-            restauranteAtual.setCozinha(cozinha);
-        } catch (EntidadeNaoEncontradaException e) {
-            throw new NegocioException(e.getMessage());
-        }
+            Restaurante restauranteAtual = cadastroRestauranteService.buscarOuFalhar(restauranteId);
+            BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "dataCadastro");
 
-        return restauranteRepository.save(restauranteAtual);
+            Cozinha cozinha = cadastroCozinhaService.buscarOuFalhar(restaurante.getCozinha().getId());
+            restauranteAtual.setCozinha(cozinha);
+            return restauranteRepository.save(restauranteAtual);
+        } catch (CozinhaNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 
     @PatchMapping("/{restauranteId}")
@@ -92,15 +92,9 @@ public class RestauranteRestController {
     }
 
     @DeleteMapping("/{restauranteId}")
-    public ResponseEntity<Void> delete(@PathVariable("restauranteId") Long restauranteId) throws RuntimeException {
-        try {
-            cadastroRestauranteService.excluir(restauranteId);
-            return ResponseEntity.noContent().build();
-        } catch (EntidadeNaoEncontradaException e) {
-            return ResponseEntity.notFound().build();
-        } catch (EntidadeEmUsoException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable("restauranteId") Long restauranteId) {
+        cadastroRestauranteService.excluir(restauranteId);
     }
 
     private void merge(Map<String, Object> campos, Restaurante restauranteAtual) {

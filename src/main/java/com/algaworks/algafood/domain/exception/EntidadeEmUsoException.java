@@ -5,13 +5,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 //@ResponseStatus(HttpStatus.CONFLICT)
-public class EntidadeEmUsoException extends ResponseStatusException {
-
-    public EntidadeEmUsoException(HttpStatus status, String mensagem) {
-        super(status, mensagem);
-    }
+public class EntidadeEmUsoException extends NegocioException {
 
     public EntidadeEmUsoException(String mensagem) {
-        this(HttpStatus.CONFLICT, mensagem);
+        super(mensagem);
     }
 }

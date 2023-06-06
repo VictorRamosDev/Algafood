@@ -1,6 +1,6 @@
 package com.algaworks.algafood.domain.service;
 
-import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +26,7 @@ public class RestauranteService {
                 return restauranteRepository.findById(restauranteId).orElse(null);
             }
         } catch (EmptyResultDataAccessException e) {
-            throw new EntidadeNaoEncontradaException(
-                    String.format("Restaurante de código %d não foi encontrado.", restauranteId)
-            );
+            throw new RestauranteNaoEncontradoException(restauranteId);
         }
         return null;
     }

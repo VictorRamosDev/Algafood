@@ -70,7 +70,7 @@ public class CozinhaRestController {
 
     @DeleteMapping("/{cozinhaId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable("cozinhaId") Long cozinhaId) throws RuntimeException {
+    public void delete(@PathVariable("cozinhaId") Long cozinhaId) {
         cadastroCozinhaService.excluir(cozinhaId);
     }
 

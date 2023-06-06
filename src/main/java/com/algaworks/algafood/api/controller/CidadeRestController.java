@@ -1,6 +1,6 @@
 package com.algaworks.algafood.api.controller;
 
-import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
+import com.algaworks.algafood.api.exceptionhandler.Problema;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Cidade;
@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -55,27 +56,22 @@ public class CidadeRestController {
     @PutMapping("/{cidadeId}")
     public Cidade atualizar(@PathVariable("cidadeId") Long cidadeId, @RequestBody Cidade cidade) {
         Cidade cidadeAtual = cadastroCidadeService.buscarOuFalhar(cidadeId);
-        BeanUtils.copyProperties(cidade, cidadeAtual, "id");
 
         try {
             Estado estado = cadastroEstadoService.buscarOuFalhar(cidade.getEstado().getId());
             cidadeAtual.setEstado(estado);
-        } catch (EntidadeNaoEncontradaException e) {
-            throw new NegocioException(e.getMessage());
-        }
+            BeanUtils.copyProperties(cidade, cidadeAtual, "id");
 
-        return cidadeRepository.save(cidadeAtual);
+            return cidadeRepository.save(cidadeAtual);
+        } catch (EntidadeNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 
     @DeleteMapping("/{cidadeId}")
-    public ResponseEntity<Void> delete(@PathVariable("cidadeId") Long cidadeId) throws RuntimeException {
-        try {
-            cadastroCidadeService.remover(cidadeId);
-            return ResponseEntity.noContent().build();
-        } catch (EntidadeNaoEncontradaException e) {
-            return ResponseEntity.notFound().build();
-        } catch (EntidadeEmUsoException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable("cidadeId") Long cidadeId) {
+        cadastroCidadeService.remover(cidadeId);
     }
+
 }
