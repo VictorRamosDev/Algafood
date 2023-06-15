@@ -22,6 +22,7 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +57,7 @@ public class RestauranteRestController {
     }
 
     @PostMapping
-    public Restaurante salvar(@RequestBody Restaurante restaurante) {
+    public Restaurante salvar(@Valid @RequestBody Restaurante restaurante) {
         try {
             long cozinhaId = restaurante.getCozinha().getId();
             Cozinha cozinha = cadastroCozinhaService.buscarOuFalhar(cozinhaId);
