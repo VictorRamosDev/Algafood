@@ -6,6 +6,7 @@ import lombok.Getter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Builder
@@ -19,4 +20,13 @@ public class Problema {
 
     private LocalDateTime timestamp;
     private String userMessage;
+    private List<Field> fields;
+
+    @Getter
+    @Builder
+    public static class Field {
+
+        private String nome;
+        private String userMessage;
+    }
 }
