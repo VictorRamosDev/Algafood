@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -44,12 +45,12 @@ public class CozinhaRestController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Cozinha save(@RequestBody Cozinha cozinha) {
+    public Cozinha save(@Valid @RequestBody Cozinha cozinha) {
         return cadastroCozinhaService.salvar(cozinha);
     }
 
     @PutMapping("/{cozinhaId}")
-    public Cozinha update(@PathVariable("cozinhaId") Long cozinhaId, @RequestBody Cozinha cozinha) {
+    public Cozinha update(@PathVariable("cozinhaId") Long cozinhaId, @Valid @RequestBody Cozinha cozinha) {
         Cozinha cozinhaAtual = cadastroCozinhaService.buscarOuFalhar(cozinhaId);
         BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
 

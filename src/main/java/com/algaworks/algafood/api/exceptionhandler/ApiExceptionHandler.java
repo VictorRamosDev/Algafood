@@ -9,6 +9,9 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +27,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
@@ -40,6 +44,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     public static final String MSG_ERRO_INESPERADO_SISTEMA = "Ocorreu um erro interno inesperado no sistema. " +
             "Tente novamente e se o problema persistir, contacte o administrador do sistema.";
 
+    @Autowired
+    private MessageSource messageSource;
+
     @Override
     protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         ProblemType problemType = ProblemType.RECURSO_NAO_ENCONTRADO;
@@ -55,11 +62,13 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemType problemType = ProblemType.DADOS_INVALIDOS;
         BindingResult bindingResult = ex.getBindingResult();
         List<Problema.Field> problemFields = bindingResult.getFieldErrors().stream()
-                .map(fieldError -> Problema.Field.builder()
-                        .nome(fieldError.getField())
-                        .userMessage(fieldError.getDefaultMessage())
-                        .build()
-                ).collect(Collectors.toList());
+                .map(fieldError -> {
+                    String message = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
+                    return Problema.Field.builder()
+                                    .nome(fieldError.getField())
+                                    .userMessage(message)
+                                    .build();
+                }).collect(Collectors.toList());
 
         Problema problem = createProblemaBuilder(status, MSG_DADOS_INVALIDOS, problemType)
                 .userMessage(MSG_DADOS_INVALIDOS)

@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.algafood.domain.exception.Groups;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
@@ -19,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -70,8 +72,10 @@ public class RestauranteRestController {
     }
 
     @PutMapping("/{restauranteId}")
-    public Restaurante atualizar(@PathVariable("restauranteId") Long restauranteId, @RequestBody Restaurante restaurante)
-            throws RuntimeException {
+    public Restaurante atualizar(
+            @PathVariable("restauranteId") Long restauranteId,
+            @Valid @RequestBody Restaurante restaurante
+    ) throws RuntimeException {
         try {
             Restaurante restauranteAtual = cadastroRestauranteService.buscarOuFalhar(restauranteId);
             BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "dataCadastro");
