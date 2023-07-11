@@ -2,8 +2,8 @@ package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
-import com.algaworks.algafood.domain.exception.Groups;
 import com.algaworks.algafood.domain.exception.NegocioException;
+import com.algaworks.algafood.domain.exception.ValidacaoException;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
@@ -20,7 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,6 +45,9 @@ public class RestauranteRestController {
 
     @Autowired
     private CadastroCozinhaService cadastroCozinhaService;
+
+    @Autowired
+    private SmartValidator validator;
 
     @GetMapping
     public ResponseEntity<List<Restaurante>> listar() {
@@ -97,8 +101,19 @@ public class RestauranteRestController {
         Restaurante restauranteAtual = restauranteRepository.findById(restauranteId).orElse(null);
 
         merge(campos, restauranteAtual, servletRequest);
+        validate(restauranteAtual, "restaurante");
         atualizar(restauranteId, restauranteAtual);
+
         return ResponseEntity.ok(restauranteAtual);
+    }
+
+    private void validate(Restaurante restaurante, String objectName) {
+        BeanPropertyBindingResult bidingResult = new BeanPropertyBindingResult(restaurante, objectName);
+        validator.validate(restaurante, bidingResult);
+
+        if (bidingResult.hasErrors()) {
+            throw new ValidacaoException(bidingResult);
+        }
     }
 
     @DeleteMapping("/{restauranteId}")

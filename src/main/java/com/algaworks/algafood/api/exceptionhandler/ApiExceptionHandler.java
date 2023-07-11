@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.exceptionhandler;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
+import com.algaworks.algafood.domain.exception.ValidacaoException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.IgnoredPropertyException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
@@ -17,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -48,7 +50,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     private MessageSource messageSource;
 
     @Override
-    protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleNoHandlerFoundException(
+            NoHandlerFoundException ex,
+            HttpHeaders headers,
+            HttpStatus status,
+            WebRequest request
+    ) {
         ProblemType problemType = ProblemType.RECURSO_NAO_ENCONTRADO;
         String detail = String.format(MSG_RECURSO_INEXISTENTE, ex.getRequestURL());
         Problema problem = createProblemaBuilder(status, detail, problemType)
@@ -58,21 +65,63 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        ProblemType problemType = ProblemType.DADOS_INVALIDOS;
-        BindingResult bindingResult = ex.getBindingResult();
-        List<Problema.Field> problemFields = bindingResult.getFieldErrors().stream()
-                .map(fieldError -> {
-                    String message = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
-                    return Problema.Field.builder()
-                                    .nome(fieldError.getField())
-                                    .userMessage(message)
-                                    .build();
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex,
+            HttpHeaders headers,
+            HttpStatus status,
+            WebRequest request
+    ) {
+        return handleArgumentsNotValid(
+                ex.getBindingResult(),
+                ProblemType.DADOS_INVALIDOS,
+                MSG_DADOS_INVALIDOS,
+                ex,
+                headers,
+                status,
+                request
+        );
+    }
+
+    @ExceptionHandler(ValidacaoException.class)
+    public ResponseEntity<Object> handlerInvalidArgumentValidacao(ValidacaoException ex, WebRequest request) {
+        return handleArgumentsNotValid(
+                ex.getBindingResult(),
+                ProblemType.DADOS_INVALIDOS,
+                MSG_DADOS_INVALIDOS,
+                ex,
+                new HttpHeaders(),
+                HttpStatus.BAD_REQUEST,
+                request
+        );
+    }
+
+    private ResponseEntity<Object> handleArgumentsNotValid(
+            BindingResult bindingResult,
+            ProblemType problemType,
+            String msgError,
+            Exception ex,
+            HttpHeaders headers,
+            HttpStatus status,
+            WebRequest request
+    ) {
+        List<Problema.Object> problemFields = bindingResult.getAllErrors().stream()
+                .map(objectError -> {
+                    String message = messageSource.getMessage(objectError, LocaleContextHolder.getLocale());
+                    String name = objectError.getObjectName();
+
+                    if (objectError instanceof FieldError) {
+                        name = ((FieldError) objectError).getField();
+                    }
+
+                    return Problema.Object.builder()
+                            .nome(name)
+                            .userMessage(message)
+                            .build();
                 }).collect(Collectors.toList());
 
-        Problema problem = createProblemaBuilder(status, MSG_DADOS_INVALIDOS, problemType)
-                .userMessage(MSG_DADOS_INVALIDOS)
-                .fields(problemFields)
+        Problema problem = createProblemaBuilder(status, msgError, problemType)
+                .userMessage(msgError)
+                .objects(problemFields)
                 .build();
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
