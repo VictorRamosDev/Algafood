@@ -1,9 +1,9 @@
 package com.algaworks.algafood.domain.model;
 
 import com.algaworks.algafood.core.validation.Groups;
-import com.algaworks.algafood.core.validation.ValorZeroIncluiDescricao;
 import com.algaworks.algafood.core.validation.Multiplo;
 import com.algaworks.algafood.core.validation.TaxaFrete;
+import com.algaworks.algafood.core.validation.ValorZeroIncluiDescricao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
@@ -56,8 +56,8 @@ public class Restaurante {
     @Valid
     @ConvertGroup(from = Default.class, to = Groups.CozinhaIdGroup.class)
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"hibernateLazyInitializer"})
+    @ManyToOne
+    @JsonIgnoreProperties(value = "nome", allowGetters = true)
     @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;
 
