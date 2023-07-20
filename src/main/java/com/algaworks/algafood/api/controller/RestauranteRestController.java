@@ -50,11 +50,10 @@ public class RestauranteRestController {
     private SmartValidator validator;
 
     @GetMapping
-    public ResponseEntity<List<Restaurante>> listar() {
-        List<Restaurante> restaurantes = restauranteService.listar();
-        System.out.println("Cozinha do primeiro restaurante é:");
-        System.out.println(restaurantes.get(0).getCozinha().getNome());
-        return ResponseEntity.ok(restaurantes);
+    public List<Restaurante> listar() {
+//        System.out.println("Cozinha do primeiro restaurante é:");
+//        System.out.println(restaurantes.get(0).getCozinha().getNome());
+        return restauranteService.listar();
     }
 
     @GetMapping("/{restauranteId}")
@@ -63,6 +62,7 @@ public class RestauranteRestController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Restaurante salvar(@Valid @RequestBody Restaurante restaurante) {
         try {
             long cozinhaId = restaurante.getCozinha().getId();

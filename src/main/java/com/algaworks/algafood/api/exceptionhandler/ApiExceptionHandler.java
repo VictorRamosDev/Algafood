@@ -29,7 +29,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
