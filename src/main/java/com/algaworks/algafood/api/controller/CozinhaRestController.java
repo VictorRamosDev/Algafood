@@ -24,9 +24,6 @@ public class CozinhaRestController {
     @Autowired
     private CadastroCozinhaService cadastroCozinhaService;
 
-    @Autowired
-    private CozinhaRepository cozinhaRepository;
-
     @GetMapping
     public List<Cozinha> listCozinhas() {
         return cozinhaService.list();

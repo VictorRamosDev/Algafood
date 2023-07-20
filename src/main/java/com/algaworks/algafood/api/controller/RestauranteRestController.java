@@ -64,15 +64,7 @@ public class RestauranteRestController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Restaurante salvar(@Valid @RequestBody Restaurante restaurante) {
-        try {
-            long cozinhaId = restaurante.getCozinha().getId();
-            Cozinha cozinha = cadastroCozinhaService.buscarOuFalhar(cozinhaId);
-            restaurante.setCozinha(cozinha);
-        } catch (EntidadeNaoEncontradaException e) {
-            throw new NegocioException(e.getMessage());
-        }
-
-        return restauranteRepository.save(restaurante);
+        return cadastroRestauranteService.salvar(restaurante);
     }
 
     @PutMapping("/{restauranteId}")
