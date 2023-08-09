@@ -1,6 +1,5 @@
 package com.algaworks.algafood.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -32,17 +31,14 @@ public class Pedido {
     private LocalDateTime dataEntrega;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"hibernateLazyInitializer"})
     @JoinColumn(name = "forma_pagamento_id", nullable = false)
     private FormaPagamento formaPagamento;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"hibernateLazyInitializer"})
     @JoinColumn(name = "restaurante_id", nullable = false)
     private Restaurante restaurante;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"hibernateLazyInitializer"})
     @JoinColumn(name = "cliente_id", nullable = false)
     private Usuario cliente;
 

@@ -1,14 +1,13 @@
-package com.algaworks.algafood.api.model;
+package com.algaworks.algafood.api.model.mixin;
 
 import com.algaworks.algafood.domain.model.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
-public class RestauranteMixIn {
+public abstract class RestauranteMixin {
 
     @JsonIgnore
     private LocalDateTime dataCadastro;
@@ -23,7 +22,7 @@ public class RestauranteMixIn {
     private Endereco endereco;
 
     @JsonIgnore
-    private List<FormaPagamento> formasPagamento = new ArrayList<>();
+    private List<FormaPagamento> formasPagamento;
 
     @JsonIgnore
     private List<Produto> produtos;

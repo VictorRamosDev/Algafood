@@ -1,6 +1,5 @@
 package com.algaworks.algafood.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -23,12 +22,10 @@ public class ItemPedido {
     private String observacao;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"hibernateLazyInitializer"})
     @JoinColumn(name = "pedido_id", nullable = false)
     private Pedido pedido;
 
     @ManyToOne
-    @JsonIgnoreProperties({"hibernateLazyInitializer"})
     @JoinColumn(name = "produto_id", nullable = false)
     private Produto produto;
 
