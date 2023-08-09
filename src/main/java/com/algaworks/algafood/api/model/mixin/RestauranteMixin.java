@@ -4,16 +4,16 @@ import com.algaworks.algafood.domain.model.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 public abstract class RestauranteMixin {
 
     @JsonIgnore
-    private LocalDateTime dataCadastro;
+    private OffsetDateTime dataCadastro;
 
     @JsonIgnore
-    private LocalDateTime dataAtualizacao;
+    private OffsetDateTime dataAtualizacao;
 
     @JsonIgnoreProperties(value = "nome", allowGetters = true)
     private Cozinha cozinha;

@@ -27,7 +27,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -271,7 +271,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                     .status(status.value())
                     .title(status.getReasonPhrase())
                     .detail(ex.getMessage())
-                    .timestamp(LocalDateTime.now())
+                    .timestamp(OffsetDateTime.now())
                     .userMessage(MSG_ERRO_INESPERADO_SISTEMA)
                     .build();
         } else if (body instanceof String) {
@@ -279,7 +279,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                     .status(status.value())
                     .title(status.getReasonPhrase())
                     .detail((String) body)
-                    .timestamp(LocalDateTime.now())
+                    .timestamp(OffsetDateTime.now())
                     .userMessage(MSG_ERRO_INESPERADO_SISTEMA)
                     .build();
         }
@@ -294,7 +294,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .type(problemType.getUri())
                 .title(problemType.getTitle())
                 .detail(detail)
-                .timestamp(LocalDateTime.now());
+                .timestamp(OffsetDateTime.now());
     }
 
 }
