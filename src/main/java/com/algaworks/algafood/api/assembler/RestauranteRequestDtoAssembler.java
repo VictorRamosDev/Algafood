@@ -1,8 +1,9 @@
 package com.algaworks.algafood.api.assembler;
 
-import com.algaworks.algafood.api.model.CozinhaIdRequestDTO;
 import com.algaworks.algafood.api.model.RestauranteRequestDTO;
 import com.algaworks.algafood.domain.model.Restaurante;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,15 +13,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class RestauranteRequestDtoAssembler {
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     public RestauranteRequestDTO toRequestModel(Restaurante restaurante) {
-        RestauranteRequestDTO restauranteRequestDTO = new RestauranteRequestDTO();
-        restauranteRequestDTO.setNome(restaurante.getNome());
-        restauranteRequestDTO.setTaxaFrete(restaurante.getTaxaFrete());
-
-        CozinhaIdRequestDTO cozinhaIdRequestDTO = new CozinhaIdRequestDTO();
-        cozinhaIdRequestDTO.setId(restaurante.getCozinha().getId());
-        restauranteRequestDTO.setCozinha(cozinhaIdRequestDTO);
-
-        return restauranteRequestDTO;
+        return modelMapper.map(restaurante, RestauranteRequestDTO.class);
     }
 }
