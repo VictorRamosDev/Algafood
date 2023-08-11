@@ -14,6 +14,27 @@ delete from restaurante;
 delete from usuario;
 
 set foreign_key_checks = 1;
+SET @count = 1;
+
+UPDATE cidade SET cidade.id = @count;
+UPDATE cozinha SET cozinha.id = @count;
+UPDATE estado SET estado.id = @count;
+UPDATE forma_pagamento SET forma_pagamento.id = @count;
+UPDATE grupo SET grupo.id = @count;
+UPDATE permissao SET permissao.id = @count;
+UPDATE produto SET produto.id = @count;
+UPDATE restaurante SET restaurante.id = @count;
+UPDATE usuario SET usuario.id = @count;
+
+ALTER TABLE cidade auto_increment = 1;
+ALTER TABLE cozinha auto_increment = 1;
+ALTER TABLE estado auto_increment = 1;
+ALTER TABLE forma_pagamento auto_increment = 1;
+ALTER TABLE grupo auto_increment = 1;
+ALTER TABLE permissao auto_increment = 1;
+ALTER TABLE produto auto_increment = 1;
+ALTER TABLE restaurante auto_increment = 1;
+ALTER TABLE usuario auto_increment = 1;
 
 insert ignore into cozinha (id, nome) values (1, 'Tailandesa');
 insert ignore into cozinha (id, nome) values (2, 'Indiana');
