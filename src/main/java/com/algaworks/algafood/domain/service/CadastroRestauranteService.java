@@ -5,13 +5,17 @@ import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Cozinha;
+import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.model.Restaurante;
+import com.algaworks.algafood.domain.repository.FormaPagamentoRepository;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class CadastroRestauranteService {
@@ -24,12 +28,18 @@ public class CadastroRestauranteService {
     @Autowired
     private RestauranteRepository restauranteRepository;
 
+    @Autowired
+    private FormaPagamentoRepository formaPagamentoRepository;
+
     @Transactional
     public Restaurante salvar(Restaurante restaurante) {
         try {
             long cozinhaId = restaurante.getCozinha().getId();
             Cozinha cozinha = cadastroCozinhaService.buscarOuFalhar(cozinhaId);
             restaurante.setCozinha(cozinha);
+
+            List<FormaPagamento> formaPagamentoList = formaPagamentoRepository.findAll();
+            restaurante.setFormasPagamento(formaPagamentoList);
         } catch (EntidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage());
         }
