@@ -8,7 +8,6 @@ import com.algaworks.algafood.api.model.RestauranteRequestDTO;
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.ValidacaoException;
-import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.service.CadastroCozinhaService;
@@ -17,7 +16,6 @@ import com.algaworks.algafood.domain.service.RestauranteService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -88,14 +86,15 @@ public class RestauranteRestController {
     public RestauranteDTO atualizar(
             @PathVariable("restauranteId") Long restauranteId,
             @Valid @RequestBody RestauranteRequestDTO request
-    ) throws RuntimeException {
+    ){
         try {
-            Restaurante restaurante = restauranteRequestDtoDisassembler.toDomainModel(request);
+//            Restaurante restaurante = restauranteRequestDtoDisassembler.toDomainModel(request);
             Restaurante restauranteAtual = cadastroRestauranteService.buscarOuFalhar(restauranteId);
-            BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "dataCadastro");
+//            BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro", "produtos");
+            restauranteRequestDtoDisassembler.copyToDomainModel(request, restauranteAtual);
+//            Cozinha cozinha = cadastroCozinhaService.buscarOuFalhar(restaurante.getCozinha().getId());
+//            restauranteAtual.setCozinha(cozinha);
 
-            Cozinha cozinha = cadastroCozinhaService.buscarOuFalhar(restaurante.getCozinha().getId());
-            restauranteAtual.setCozinha(cozinha);
             return restauranteDtoAssembler.toModel(restauranteRepository.save(restauranteAtual));
         } catch (CozinhaNaoEncontradaException e) {
             throw new NegocioException(e.getMessage(), e);
