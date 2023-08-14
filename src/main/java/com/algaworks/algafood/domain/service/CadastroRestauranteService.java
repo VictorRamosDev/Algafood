@@ -48,9 +48,10 @@ public class CadastroRestauranteService {
     }
 
     @Transactional
-    public void excluir(Long restauranteId) throws RuntimeException {
+    public void excluir(Long restauranteId) {
         try {
             restauranteRepository.deleteById(restauranteId);
+            restauranteRepository.flush();
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(
                     String.format(MSG_RESTAURANTE_EM_USO, restauranteId)
