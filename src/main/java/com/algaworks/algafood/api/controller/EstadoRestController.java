@@ -1,13 +1,14 @@
 package com.algaworks.algafood.api.controller;
 
-import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
-import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
-import com.algaworks.algafood.domain.exception.EstadoNaoEncontradoException;
+import com.algaworks.algafood.api.assembler.EstadoDtoAssembler;
+import com.algaworks.algafood.api.disassembler.EstadoRequestDtoDisassembler;
+import com.algaworks.algafood.api.model.EstadoDTO;
+import com.algaworks.algafood.api.model.EstadoRequestDTO;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.service.CadastroEstadoService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -15,29 +16,36 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/estados")
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class EstadoRestController {
 
-    @Autowired
-    private CadastroEstadoService cadastroEstadoService;
+    private final CadastroEstadoService cadastroEstadoService;
+
+    private final EstadoDtoAssembler estadoDtoAssembler;
+
+    private final EstadoRequestDtoDisassembler estadoRequestDtoDisassembler;
 
     @GetMapping
-    public List<Estado> listEstados() {
-        return cadastroEstadoService.list();
+    public List<EstadoDTO> listEstados() {
+        return estadoDtoAssembler.toCollectionModel(cadastroEstadoService.list());
     }
 
     @GetMapping("/{estadoId}")
-    public Estado getEstado(@PathVariable("estadoId") Long estadoId) {
-        return cadastroEstadoService.getSingleton(estadoId);
+    public EstadoDTO getEstado(@PathVariable("estadoId") Long estadoId) {
+        return estadoDtoAssembler.toModel(cadastroEstadoService.getSingleton(estadoId));
     }
 
     @PostMapping
-    public Estado salvar(@Valid @RequestBody Estado estado) {
-        return cadastroEstadoService.salvar(estado);
+    public EstadoDTO salvar(@Valid @RequestBody EstadoRequestDTO request) {
+        Estado estado = estadoRequestDtoDisassembler.toDomainModel(request);
+        estado = cadastroEstadoService.salvar(estado);
+        return estadoDtoAssembler.toModel(estado);
     }
 
     @PutMapping("/{estadoId}")
-    public Estado atualizar(@PathVariable("estadoId") Long estadoId, @Valid @RequestBody Estado estado) {
-        return cadastroEstadoService.atualizar(estadoId, estado);
+    public EstadoDTO atualizar(@PathVariable("estadoId") Long estadoId, @Valid @RequestBody EstadoRequestDTO request) {
+        Estado estado = cadastroEstadoService.atualizar(estadoId, request);
+        return estadoDtoAssembler.toModel(estado);
     }
 
     @DeleteMapping("/{estadoId}")

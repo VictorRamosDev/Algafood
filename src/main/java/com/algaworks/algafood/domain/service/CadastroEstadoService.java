@@ -1,11 +1,11 @@
 package com.algaworks.algafood.domain.service;
 
+import com.algaworks.algafood.api.disassembler.EstadoRequestDtoDisassembler;
+import com.algaworks.algafood.api.model.EstadoRequestDTO;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
-import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.EstadoNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.EstadoRepository;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -22,6 +22,9 @@ public class CadastroEstadoService {
     @Autowired
     private EstadoRepository estadoRepository;
 
+    @Autowired
+    private EstadoRequestDtoDisassembler estadoRequestDtoDisassembler;
+
     public List<Estado> list() {
         return estadoRepository.findAll();
     }
@@ -36,10 +39,12 @@ public class CadastroEstadoService {
     }
 
     @Transactional
-    public Estado atualizar(Long estadoId, Estado estado) {
+    public Estado atualizar(Long estadoId, EstadoRequestDTO request) {
         Estado estadoAtual = buscarOuFalhar(estadoId);
 
-        BeanUtils.copyProperties(estado, estadoAtual, "id");
+        estadoRequestDtoDisassembler.copyToDomainModel(request, estadoAtual);
+//        BeanUtils.copyProperties(estadoAtual, estadoAtual, "id");
+
         return salvar(estadoAtual);
     }
 

@@ -1,12 +1,9 @@
 package com.algaworks.algafood.domain.model;
 
-import com.algaworks.algafood.core.validation.Groups;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
@@ -14,13 +11,11 @@ import java.util.List;
 @Entity
 public class Estado {
 
-    @NotNull(groups = Groups.EstadoIdGroup.class)
-    @EqualsAndHashCode.Include
     @Id
+    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     @Column(nullable = false)
     private String nome;
 
