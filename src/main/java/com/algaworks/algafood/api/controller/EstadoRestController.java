@@ -26,12 +26,12 @@ public class EstadoRestController {
     private final EstadoRequestDtoDisassembler estadoRequestDtoDisassembler;
 
     @GetMapping
-    public List<EstadoDTO> listEstados() {
+    public List<EstadoDTO> listar() {
         return estadoDtoAssembler.toCollectionModel(cadastroEstadoService.list());
     }
 
     @GetMapping("/{estadoId}")
-    public EstadoDTO getEstado(@PathVariable("estadoId") Long estadoId) {
+    public EstadoDTO getSingle(@PathVariable("estadoId") Long estadoId) {
         return estadoDtoAssembler.toModel(cadastroEstadoService.getSingleton(estadoId));
     }
 

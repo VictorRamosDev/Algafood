@@ -49,9 +49,9 @@ insert ignore into cidade (id, nome, estado_id) values (3, 'São Paulo', 2);
 insert ignore into cidade (id, nome, estado_id) values (4, 'Campinas', 2);
 insert ignore into cidade (id, nome, estado_id) values (5, 'Fortaleza', 3);
 
-insert ignore into restaurante (id, nome, taxa_frete, cozinha_id, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro, data_cadastro, data_atualizacao) values (1, 'Thai Gourmet', 10, 1, 1, '38400-999', 'Rua João Pinheiro', '1000', 'Centro', utc_timestamp, utc_timestamp);
-insert ignore into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) values (2, 'Thai Delivery', 9.5, 1, utc_timestamp, utc_timestamp);
-insert ignore into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) values (3, 'Tuk Tuk Comida Indiana', 15, 2, utc_timestamp, utc_timestamp);
+insert ignore into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro) values (1, 'Thai Gourmet', 10, 1, utc_timestamp, utc_timestamp, true, 1, '38400-999', 'Rua João Pinheiro', '1000', 'Centro');
+insert ignore into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo) values (2, 'Thai Delivery', 9.5, 1, utc_timestamp, utc_timestamp, true);
+insert ignore into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo) values (3, 'Tuk Tuk Comida Indiana', 15, 2, utc_timestamp, utc_timestamp, true);
 
 insert ignore into forma_pagamento (id, descricao) values (1, 'Cartão de crédito');
 insert ignore into forma_pagamento (id, descricao) values (2, 'Cartão de débito');

@@ -68,7 +68,7 @@ public class RestauranteRestController {
     }
 
     @GetMapping("/{restauranteId}")
-    public RestauranteDTO listarSingleton(@PathVariable("restauranteId") Long restauranteId) {
+    public RestauranteDTO getSingle(@PathVariable("restauranteId") Long restauranteId) {
         Restaurante restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId);
 
         return restauranteDtoAssembler.toModel(restaurante);
@@ -133,6 +133,18 @@ public class RestauranteRestController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("restauranteId") Long restauranteId) {
         cadastroRestauranteService.excluir(restauranteId);
+    }
+
+    @PutMapping("/{restauranteId}/ativo")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void ativate(@PathVariable Long restauranteId) {
+        cadastroRestauranteService.ativar(restauranteId);
+    }
+
+    @DeleteMapping("/{restauranteId}/ativo")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void inativate(@PathVariable Long restauranteId) {
+        cadastroRestauranteService.inativar(restauranteId);
     }
 
     private void merge(Map<String, Object> campos, Restaurante restauranteAtual, HttpServletRequest request) {

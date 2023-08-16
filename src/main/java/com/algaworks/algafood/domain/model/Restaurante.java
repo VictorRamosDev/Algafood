@@ -54,4 +54,14 @@ public class Restaurante {
     @OneToMany(mappedBy = "restaurante")
     private List<Pedido> pedidos;
 
+    private boolean ativo = Boolean.TRUE;
+
+    public void ativar() {
+        this.setAtivo(true);
+    }
+
+    public void inativar() {
+        this.setAtivo(false);
+    }
+
 }

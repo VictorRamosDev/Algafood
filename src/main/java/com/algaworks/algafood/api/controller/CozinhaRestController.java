@@ -82,5 +82,4 @@ public class CozinhaRestController {
     public void delete(@PathVariable("cozinhaId") Long cozinhaId) {
         cadastroCozinhaService.excluir(cozinhaId);
     }
-
 }

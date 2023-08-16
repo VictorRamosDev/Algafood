@@ -28,12 +28,12 @@ public class CidadeRestController {
     private final CidadeRequestDtoDisassembler cidadeRequestDtoDisassembler;
 
     @GetMapping
-    public List<CidadeDTO> listCidades() {
+    public List<CidadeDTO> listar() {
         return cidadeDtoAssembler.toCollectionModel(cadastroCidadeService.list());
     }
 
     @GetMapping("/{cidadeId}")
-    public CidadeDTO getCidade(@PathVariable("cidadeId") Long cidadeId) {
+    public CidadeDTO getSingle(@PathVariable("cidadeId") Long cidadeId) {
         return cidadeDtoAssembler.toModel(cadastroCidadeService.getSingleton(cidadeId));
     }
 
