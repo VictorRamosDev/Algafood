@@ -3,24 +3,16 @@ package com.algaworks.algafood.api.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-
 /**
  * @author Victor Ramos
  */
 
 @Getter
 @Setter
-public class RestauranteDTO {
+public class CidadeTinyDTO {
 
     private Long id;
-
     private String nome;
-
-    private BigDecimal taxaFrete;
-
-    private CozinhaDTO cozinha;
-
-    private EnderecoTinyDTO endereco;
+    private String estado;
 
 }
