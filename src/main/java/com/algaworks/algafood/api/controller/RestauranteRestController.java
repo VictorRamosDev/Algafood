@@ -5,11 +5,11 @@ import com.algaworks.algafood.api.assembler.RestauranteRequestDtoAssembler;
 import com.algaworks.algafood.api.disassembler.RestauranteRequestDtoDisassembler;
 import com.algaworks.algafood.api.model.RestauranteDTO;
 import com.algaworks.algafood.api.model.RestauranteRequestDTO;
+import com.algaworks.algafood.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.ValidacaoException;
 import com.algaworks.algafood.domain.model.Restaurante;
-import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.service.CadastroCozinhaService;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 import com.algaworks.algafood.domain.service.RestauranteService;
@@ -35,9 +35,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/restaurantes")
 public class RestauranteRestController {
-
-    @Autowired
-    private RestauranteRepository restauranteRepository;
 
     @Autowired
     private RestauranteService restauranteService;
@@ -95,8 +92,9 @@ public class RestauranteRestController {
 //            Cozinha cozinha = cadastroCozinhaService.buscarOuFalhar(restaurante.getCozinha().getId());
 //            restauranteAtual.setCozinha(cozinha);
 
-            return restauranteDtoAssembler.toModel(restauranteRepository.save(restauranteAtual));
-        } catch (CozinhaNaoEncontradaException e) {
+            Restaurante restauranteUpdated = cadastroRestauranteService.salvar(restauranteAtual);
+            return restauranteDtoAssembler.toModel(restauranteUpdated);
+        } catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage(), e);
         }
     }
@@ -107,7 +105,7 @@ public class RestauranteRestController {
             @RequestBody Map<String, Object> campos,
             HttpServletRequest servletRequest
     ) {
-        Restaurante restauranteAtual = restauranteRepository.findById(restauranteId).orElse(null);
+        Restaurante restauranteAtual = restauranteService.listarSingleton(restauranteId);
 
         if (restauranteAtual != null) {
             merge(campos, restauranteAtual, servletRequest);

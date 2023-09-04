@@ -4,6 +4,7 @@ import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
+import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.model.Restaurante;
@@ -26,6 +27,9 @@ public class CadastroRestauranteService {
     private CadastroCozinhaService cadastroCozinhaService;
 
     @Autowired
+    private CadastroCidadeService cadastroCidadeService;
+
+    @Autowired
     private RestauranteRepository restauranteRepository;
 
     @Autowired
@@ -36,7 +40,12 @@ public class CadastroRestauranteService {
         try {
             long cozinhaId = restaurante.getCozinha().getId();
             Cozinha cozinha = cadastroCozinhaService.buscarOuFalhar(cozinhaId);
+
+            long cidadeId = restaurante.getEndereco().getCidade().getId();
+            Cidade cidade = cadastroCidadeService.buscarOuFalhar(cidadeId);
+
             restaurante.setCozinha(cozinha);
+            restaurante.getEndereco().setCidade(cidade);
 
             List<FormaPagamento> formaPagamentoList = formaPagamentoRepository.findAll();
             restaurante.setFormasPagamento(formaPagamentoList);

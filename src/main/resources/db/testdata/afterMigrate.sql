@@ -76,3 +76,5 @@ insert ignore into usuario(id, nome, email, senha, data_cadastro) values (3, 'Vi
 insert ignore into grupos_permissoes(grupo_id, permissao_id) values (1, 1), (1, 2), (2, 1);
 
 insert ignore into usuarios_grupos(usuario_id, grupo_id) values (2, 1), (3, 1), (1, 2), (3, 2);
+
+insert ignore into grupo(nome) values ('Gerente'), ('Vendedor'), ('Secretária'), ('Cadastrador');

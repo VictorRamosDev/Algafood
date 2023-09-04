@@ -31,7 +31,7 @@ public class RestauranteService {
         return null;
     }
 
-    public Restaurante salvar(Restaurante restaurante) throws RuntimeException {
+    public Restaurante salvar(Restaurante restaurante) {
         if (restaurante != null) {
             return restauranteRepository.save(restaurante);
         }
