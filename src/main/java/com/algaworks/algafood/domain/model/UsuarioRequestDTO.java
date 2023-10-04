@@ -1,10 +1,9 @@
 package com.algaworks.algafood.domain.model;
 
-import com.algaworks.algafood.api.model.PermissaoDTO;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
+import javax.validation.constraints.NotBlank;
 
 /**
  * @author Victor Ramos
@@ -12,12 +11,12 @@ import java.util.List;
 
 @Getter
 @Setter
-public class GrupoDTO {
+public class UsuarioRequestDTO {
 
-    private Long id;
-
+    @NotBlank
     private String nome;
 
-    private List<PermissaoDTO> permissoes;
+    @NotBlank
+    private String email;
 
 }

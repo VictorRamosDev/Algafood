@@ -21,7 +21,7 @@ import java.util.List;
 @Service
 public class CadastroRestauranteService {
 
-    public static final String MSG_RESTAURANTE_EM_USO = "Restaurante de código %d não pode ser removido, pois está em uso.";
+    public static final String MSG_RESTAURANTE_EM_USO = "Restaurante, de código %d, não pode ser removido, pois está em uso.";
 
     @Autowired
     private CadastroCozinhaService cadastroCozinhaService;

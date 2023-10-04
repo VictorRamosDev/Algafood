@@ -1,6 +1,5 @@
 package com.algaworks.algafood.domain.model;
 
-import com.algaworks.algafood.api.model.PermissaoDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,12 +11,11 @@ import java.util.List;
 
 @Getter
 @Setter
-public class GrupoDTO {
+public class UsuarioDTO {
 
     private Long id;
-
     private String nome;
-
-    private List<PermissaoDTO> permissoes;
+    private String email;
+    private List<GrupoDTO> grupos;
 
 }
