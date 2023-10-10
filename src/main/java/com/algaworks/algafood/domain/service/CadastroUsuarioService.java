@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Victor Ramos
@@ -38,6 +39,13 @@ public class CadastroUsuarioService {
 
     @Transactional
     public Usuario salvar(Usuario usuario) {
+        usuarioRepository.detach(usuario);
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByEmail(usuario.getEmail());
+
+        if (usuarioOpt.isPresent() && !usuarioOpt.get().equals(usuario)) {
+            throw new NegocioException(String.format("Já existe um usuário cadastrado com o email %s", usuario.getEmail()));
+        }
+
         return usuarioRepository.save(usuario);
     }
 
