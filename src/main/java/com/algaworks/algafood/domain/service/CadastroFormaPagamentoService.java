@@ -49,4 +49,5 @@ public class CadastroFormaPagamentoService {
             throw new FormaPagamentoNaoEncontradaException(formaPagamentoId);
         }
     }
+
 }

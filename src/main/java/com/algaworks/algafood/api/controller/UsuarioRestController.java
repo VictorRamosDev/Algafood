@@ -2,7 +2,11 @@ package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.api.assembler.UsuarioDtoAssembler;
 import com.algaworks.algafood.api.disassembler.UsuarioRequestDtoDisassembler;
-import com.algaworks.algafood.domain.model.*;
+import com.algaworks.algafood.api.model.SenhaRequestDTO;
+import com.algaworks.algafood.api.model.UsuarioComSenhaRequestDTO;
+import com.algaworks.algafood.api.model.UsuarioDTO;
+import com.algaworks.algafood.api.model.UsuarioRequestDTO;
+import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.service.CadastroUsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

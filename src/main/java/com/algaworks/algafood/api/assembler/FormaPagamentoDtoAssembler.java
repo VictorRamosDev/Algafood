@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,12 +17,12 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class FormaPagamentoAssembler {
+public class FormaPagamentoDtoAssembler {
 
     private final ModelMapper modelMapper;
 
 
-    public List<FormaPagamentoDTO> toCollectionModel(List<FormaPagamento> formaPagamentos) {
+    public List<FormaPagamentoDTO> toCollectionModel(Collection<FormaPagamento> formaPagamentos) {
         return formaPagamentos.stream().map(this::toModel).collect(Collectors.toList());
     }
 

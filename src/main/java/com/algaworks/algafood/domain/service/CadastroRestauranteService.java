@@ -16,7 +16,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class CadastroRestauranteService {
@@ -28,6 +29,9 @@ public class CadastroRestauranteService {
 
     @Autowired
     private CadastroCidadeService cadastroCidadeService;
+
+    @Autowired
+    private CadastroFormaPagamentoService cadastroFormaPagamentoService;
 
     @Autowired
     private RestauranteRepository restauranteRepository;
@@ -47,7 +51,7 @@ public class CadastroRestauranteService {
             restaurante.setCozinha(cozinha);
             restaurante.getEndereco().setCidade(cidade);
 
-            List<FormaPagamento> formaPagamentoList = formaPagamentoRepository.findAll();
+            Set<FormaPagamento> formaPagamentoList = new HashSet<>(formaPagamentoRepository.findAll());
             restaurante.setFormasPagamento(formaPagamentoList);
         } catch (EntidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage());
@@ -88,5 +92,21 @@ public class CadastroRestauranteService {
         Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
 
         restauranteAtual.inativar();
+    }
+
+    @Transactional
+    public void desassociarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
+        Restaurante restaurante = buscarOuFalhar(restauranteId);
+        FormaPagamento formaPagamento = cadastroFormaPagamentoService.buscarOuFalhar(formaPagamentoId);
+
+        restaurante.removerFormaPagamento(formaPagamento);
+    }
+
+    @Transactional
+    public void associarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
+        Restaurante restaurante = buscarOuFalhar(restauranteId);
+        FormaPagamento formaPagamento = cadastroFormaPagamentoService.buscarOuFalhar(formaPagamentoId);
+
+        restaurante.addFormaPagamento(formaPagamento);
     }
 }

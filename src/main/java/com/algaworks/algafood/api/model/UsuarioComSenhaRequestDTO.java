@@ -1,4 +1,4 @@
-package com.algaworks.algafood.domain.model;
+package com.algaworks.algafood.api.model;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,11 +11,8 @@ import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
-public class SenhaRequestDTO {
+public class UsuarioComSenhaRequestDTO extends UsuarioRequestDTO {
 
     @NotBlank
-    private String senhaAtual;
-
-    @NotBlank
-    private String senhaNova;
+    private String senha;
 }

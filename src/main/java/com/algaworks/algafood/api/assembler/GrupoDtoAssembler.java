@@ -1,7 +1,7 @@
 package com.algaworks.algafood.api.assembler;
 
+import com.algaworks.algafood.api.model.GrupoDTO;
 import com.algaworks.algafood.domain.model.Grupo;
-import com.algaworks.algafood.domain.model.GrupoDTO;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
