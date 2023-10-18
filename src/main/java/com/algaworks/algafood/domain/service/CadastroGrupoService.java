@@ -3,6 +3,7 @@ package com.algaworks.algafood.domain.service;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.GrupoNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Grupo;
+import com.algaworks.algafood.domain.model.Permissao;
 import com.algaworks.algafood.domain.repository.GrupoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ import java.util.List;
 public class CadastroGrupoService {
 
     private static final String MSG_GRUPO_EM_USO = "Grupo de código %d não pode ser removido, pois está em uso";
+
+    private final CadastroPermissaoService cadastroPermissaoService;
 
     private final GrupoRepository grupoRepository;
 
@@ -48,5 +51,21 @@ public class CadastroGrupoService {
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(MSG_GRUPO_EM_USO, grupoId);
         }
+    }
+
+    @Transactional
+    public void associarPermissao(Long grupoId, Long permissaoId) {
+        Grupo grupo = buscarOuFalhar(grupoId);
+        Permissao permissao = cadastroPermissaoService.buscarOuFalhar(permissaoId);
+
+        grupo.associarPermissao(permissao);
+    }
+
+    @Transactional
+    public void desassociarPermissao(Long grupoId, Long permissaoId) {
+        Grupo grupo = buscarOuFalhar(grupoId);
+        Permissao permissao = cadastroPermissaoService.buscarOuFalhar(permissaoId);
+
+        grupo.desassociarPermissao(permissao);
     }
 }

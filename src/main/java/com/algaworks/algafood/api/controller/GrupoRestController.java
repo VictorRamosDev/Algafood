@@ -61,4 +61,5 @@ public class GrupoRestController {
     public void delete(@PathVariable Long grupoId) {
         cadastroGrupoService.delete(grupoId);
     }
+
 }

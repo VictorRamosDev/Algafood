@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 
 import java.util.List;
+import java.util.Set;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
@@ -173,7 +174,7 @@ class RestauranteControllerApiIT {
     }
 
     private void prepareData() {
-        List<FormaPagamento> formasPagamento = DataPreparation.prepareFormaPagamentoData();
+        Set<FormaPagamento> formasPagamento = DataPreparation.prepareFormaPagamentoData();
         formaPagamentoRepository.saveAll(formasPagamento);
 
         List<Restaurante> restauranteList = DataPreparation.prepareRestauranteData(cozinhaRepository);

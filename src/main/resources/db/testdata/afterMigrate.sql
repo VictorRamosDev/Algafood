@@ -66,9 +66,6 @@ insert ignore into produto(id, nome, descricao, preco, ativo, restaurante_id) va
 insert ignore into produto(id, nome, descricao, preco, ativo, restaurante_id) values (2, 'Pastel Frito', 'Pastel frito no óleo.', 12.90, 1, 2);
 insert ignore into produto(id, nome, descricao, preco, ativo, restaurante_id) values (3, 'Banana Frita', 'Banana frita ao estilo cartola.', 18.99, 1, 3);
 
-insert ignore into grupo(id, nome) values (1, 'Resenha da Comida');
-insert ignore into grupo(id, nome) values (2, 'Grupo da pelada da quarta-feira');
-
 insert ignore into usuario(id, nome, email, senha, data_cadastro) values (1, 'Carlos Antônio da Silva', 'carlin@teste.teste', '123Mudar', utc_timestamp);
 insert ignore into usuario(id, nome, email, senha, data_cadastro) values (2, 'Thayná Richely de Brito Rangel', 'thayrichely@gmail.com', '123Mudar', utc_timestamp);
 insert ignore into usuario(id, nome, email, senha, data_cadastro) values (3, 'Victor Hugo de Souza Ramos', 'victorhugopb8@gmail.com', '123Mudar', utc_timestamp);
@@ -78,8 +75,8 @@ insert into usuario (id, nome, email, senha, data_cadastro)
            (6, 'José Souza', 'jose.aux@algafood.com', '123', utc_timestamp),
            (7, 'Sebastião Martins', 'sebastiao.cad@algafood.com', '123', utc_timestamp);
 
-insert ignore into grupos_permissoes(grupo_id, permissao_id) values (1, 1), (1, 2), (2, 1);
+insert into grupo (id, nome) values (1, 'Gerente'), (2, 'Vendedor'), (3, 'Secretária'), (4, 'Cadastrador');
+
+insert into grupos_permissoes (grupo_id, permissao_id) values (1, 1), (1, 2), (2, 1), (2, 2), (3, 1);
 
 insert ignore into usuarios_grupos(usuario_id, grupo_id) values (2, 1), (3, 1), (1, 2), (3, 2);
-
-insert ignore into grupo(nome) values ('Gerente'), ('Vendedor'), ('Secretária'), ('Cadastrador');

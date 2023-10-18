@@ -7,7 +7,9 @@ import com.algaworks.algafood.domain.repository.CozinhaRepository;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class DataPreparation {
 
@@ -56,8 +58,8 @@ public class DataPreparation {
         return restauranteList;
     }
 
-    public static List<FormaPagamento> prepareFormaPagamentoData() {
-        List<FormaPagamento> formasPagamento = new ArrayList<>();
+    public static Set<FormaPagamento> prepareFormaPagamentoData() {
+        Set<FormaPagamento> formasPagamento = new HashSet<>();
         FormaPagamento formaPagamento1 = new FormaPagamento();
         formaPagamento1.setDescricao("Cartão de crédito");
         formasPagamento.add(formaPagamento1);
