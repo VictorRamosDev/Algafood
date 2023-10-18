@@ -167,4 +167,18 @@ public class RestauranteRestController {
             throw new HttpMessageNotReadableException(e.getMessage(), rootCause, serverRequest);
         }
     }
+
+    @PutMapping("/{restauranteId}/abertura")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void abre(@PathVariable Long restauranteId) {
+        Restaurante restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId);
+        cadastroRestauranteService.abreRestaurante(restaurante);
+    }
+
+    @PutMapping("/{restauranteId}/fechamento")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void fecha(@PathVariable Long restauranteId) {
+        Restaurante restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId);
+        cadastroRestauranteService.fechaRestaurante(restaurante);
+    }
 }

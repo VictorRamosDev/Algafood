@@ -109,4 +109,14 @@ public class CadastroRestauranteService {
 
         restaurante.addFormaPagamento(formaPagamento);
     }
+
+    @Transactional
+    public void abreRestaurante(Restaurante restaurante) {
+        restaurante.abrir();
+    }
+
+    @Transactional
+    public void fechaRestaurante(Restaurante restaurante) {
+        restaurante.fechar();
+    }
 }

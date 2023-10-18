@@ -23,4 +23,8 @@ public class RestauranteDTO {
 
     private EnderecoDTO endereco;
 
+    private boolean ativo;
+
+    private boolean aberto;
+
 }

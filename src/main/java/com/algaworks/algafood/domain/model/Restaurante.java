@@ -57,12 +57,25 @@ public class Restaurante {
 
     private boolean ativo = Boolean.TRUE;
 
+    private boolean aberto = Boolean.FALSE;
+
+
+    // Boilerplate code
+
     public void ativar() {
         this.setAtivo(true);
     }
 
     public void inativar() {
         this.setAtivo(false);
+    }
+
+    public void abrir() {
+        this.setAberto(true);
+    }
+
+    public void fechar() {
+        this.setAberto(false);
     }
 
     public void removerFormaPagamento(FormaPagamento formaPagamento) {

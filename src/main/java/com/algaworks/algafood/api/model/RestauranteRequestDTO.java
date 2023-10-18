@@ -36,4 +36,10 @@ public class RestauranteRequestDTO {
     @NotNull
     private EnderecoRequestDTO endereco;
 
+    @NotNull
+    private boolean ativo;
+
+    @NotNull
+    private boolean aberto;
+
 }
