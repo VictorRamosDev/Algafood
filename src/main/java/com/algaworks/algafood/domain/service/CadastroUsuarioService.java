@@ -3,6 +3,7 @@ package com.algaworks.algafood.domain.service;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.UsuarioNotFoundException;
+import com.algaworks.algafood.domain.model.Grupo;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * @author Victor Ramos
@@ -24,6 +26,8 @@ import java.util.Optional;
 public class CadastroUsuarioService {
 
     private String MSG_USUARIO_EM_USO = "Usuário, de código %d, não pode ser removido, pois está em uso.";
+
+    private final CadastroGrupoService cadastroGrupoService;
 
     private final UsuarioRepository usuarioRepository;
 
@@ -70,5 +74,26 @@ public class CadastroUsuarioService {
         }
 
         usuario.setSenha(senhaNova);
+    }
+
+    public Set<Grupo> listGrupos(Long usuarioId) {
+        Usuario usuario = buscarOuFalhar(usuarioId);
+        return usuario.getGrupos();
+    }
+
+    @Transactional
+    public void associaGrupo(Long usuarioId, Long grupoId) {
+        Grupo grupo = cadastroGrupoService.buscarOuFalhar(grupoId);
+        Usuario usuario = buscarOuFalhar(usuarioId);
+
+        usuario.associaGrupo(grupo);
+    }
+
+    @Transactional
+    public void desassociaGrupo(Long usuarioId, Long grupoId) {
+        Grupo grupo = cadastroGrupoService.buscarOuFalhar(grupoId);
+        Usuario usuario = buscarOuFalhar(usuarioId);
+
+        usuario.desassociaGrupo(grupo);
     }
 }

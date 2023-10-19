@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -33,7 +34,7 @@ public class Usuario {
             joinColumns = @JoinColumn(name = "usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "grupo_id")
     )
-    private List<Grupo> grupos;
+    private Set<Grupo> grupos;
 
     @OneToMany(mappedBy = "cliente")
     private List<Pedido> pedidos;
@@ -44,5 +45,13 @@ public class Usuario {
 
     public boolean senhaNaoCoincideCom(String senha) {
         return !senhaCoincideCom(senha);
+    }
+
+    public void associaGrupo(Grupo grupo) {
+        this.getGrupos().add(grupo);
+    }
+
+    public void desassociaGrupo(Grupo grupo) {
+        this.getGrupos().remove(grupo);
     }
 }
