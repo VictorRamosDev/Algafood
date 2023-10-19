@@ -55,6 +55,14 @@ public class Restaurante {
     @OneToMany(mappedBy = "restaurante")
     private List<Pedido> pedidos;
 
+    @ManyToMany
+    @JoinTable(
+            name = "restaurantes_responsaveis",
+            joinColumns = @JoinColumn(name = "restaurante_id"),
+            inverseJoinColumns = @JoinColumn(name = "usuario_id")
+    )
+    private Set<Usuario> responsaveis;
+
     private boolean ativo = Boolean.TRUE;
 
     private boolean aberto = Boolean.FALSE;
@@ -84,5 +92,13 @@ public class Restaurante {
 
     public void addFormaPagamento(FormaPagamento formaPagamento) {
         getFormasPagamento().add(formaPagamento);
+    }
+
+    public void associaResponsavel(Usuario usuario) {
+        this.getResponsaveis().add(usuario);
+    }
+
+    public void desassociaResponsaveis(Usuario usuario) {
+        this.getResponsaveis().remove(usuario);
     }
 }

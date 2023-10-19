@@ -3,8 +3,6 @@ package com.algaworks.algafood.api.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 /**
  * @author Victor Ramos
  */
@@ -16,6 +14,5 @@ public class UsuarioDTO {
     private Long id;
     private String nome;
     private String email;
-    private List<GrupoDTO> grupos;
 
 }

@@ -80,3 +80,5 @@ insert into grupo (id, nome) values (1, 'Gerente'), (2, 'Vendedor'), (3, 'Secret
 insert into grupos_permissoes (grupo_id, permissao_id) values (1, 1), (1, 2), (2, 1), (2, 2), (3, 1);
 
 insert ignore into usuarios_grupos(usuario_id, grupo_id) values (2, 1), (3, 1), (1, 2), (3, 2);
+
+insert ignore into restaurantes_responsaveis(restaurante_id, usuario_id) values (1, 1), (1, 2), (2, 3), (3, 5);
