@@ -181,4 +181,18 @@ public class RestauranteRestController {
         Restaurante restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId);
         cadastroRestauranteService.fechaRestaurante(restaurante);
     }
+
+    // PUT /restaurantes/ativacoes
+    // DELETE /restaurante/ativacoes
+    @PutMapping("/ativacoes")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void ativaMultiplos(@RequestBody List<Long> restauranteIds) {
+        cadastroRestauranteService.ativaMultiplos(restauranteIds);
+    }
+
+    @DeleteMapping("/ativacoes")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void inativaMultiplos(@RequestBody List<Long> restauranteIds) {
+        cadastroRestauranteService.inativaMultiplos(restauranteIds);
+    }
 }

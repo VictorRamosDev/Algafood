@@ -12,6 +12,7 @@ delete from permissao;
 delete from produto;
 delete from restaurante;
 delete from usuario;
+delete from restaurantes_responsaveis;
 
 set foreign_key_checks = 1;
 SET @count = 1;

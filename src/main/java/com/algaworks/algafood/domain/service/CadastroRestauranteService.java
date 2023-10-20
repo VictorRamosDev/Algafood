@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -139,5 +140,23 @@ public class CadastroRestauranteService {
         Usuario usuario = cadastroUsuarioService.buscarOuFalhar(usuarioId);
 
         restaurante.desassociaResponsaveis(usuario);
+    }
+
+    @Transactional
+    public void ativaMultiplos(List<Long> restauranteIds) {
+        try {
+            restauranteIds.forEach(this::ativar);
+        } catch (RestauranteNaoEncontradoException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
+    }
+
+    @Transactional
+    public void inativaMultiplos(List<Long> restauranteIds) {
+        try {
+            restauranteIds.forEach(this::inativar);
+        } catch (RestauranteNaoEncontradoException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 }
