@@ -45,7 +45,8 @@ public class Pedido {
     @Embedded
     private Endereco endereco;
 
-    private StatusPedido status;
+    @Enumerated(value = EnumType.STRING)
+    private StatusPedido status = StatusPedido.CRIADO;
 
     @OneToMany(mappedBy = "pedido")
     private List<ItemPedido> itemPedido = new ArrayList<>();
