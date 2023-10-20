@@ -98,7 +98,7 @@ insert into pedido (id, restaurante_id, cliente_id, forma_pagamento_id, endereco
         endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro,
         status, data_criacao, sub_total, taxa_frete, valor_total)
     values (1, 1, 1, 1, 1, '38400-000', 'Rua Floriano Peixoto', '500', 'Apto 801', 'Brasil',
-    'CRIADO', utc_timestamp, 68,7, 10, 78,7);
+    'CRIADO', utc_timestamp, 68.7, 10, 78.7);
 
 insert into item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
     values (1, 1, 1, 1, 42.9, 42.9, null);
