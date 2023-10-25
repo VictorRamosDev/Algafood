@@ -1,8 +1,10 @@
 package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.api.assembler.PedidoDtoAssembler;
+import com.algaworks.algafood.api.assembler.PedidoTinyDtoAssembler;
 import com.algaworks.algafood.api.model.PedidoDTO;
 import com.algaworks.algafood.api.model.PedidoRequestDTO;
+import com.algaworks.algafood.api.model.PedidoTinyDTO;
 import com.algaworks.algafood.domain.service.CadastroPedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,9 +27,12 @@ public class PedidoRestController {
     @Autowired
     private PedidoDtoAssembler pedidoDtoAssembler;
 
+    @Autowired
+    private PedidoTinyDtoAssembler pedidoTinyDtoAssembler;
+
     @GetMapping
-    public List<PedidoDTO> list() {
-        return pedidoDtoAssembler.toCollectionModel(cadastroPedidoService.list());
+    public List<PedidoTinyDTO> list() {
+        return pedidoTinyDtoAssembler.toCollectionModel(cadastroPedidoService.list());
     }
 
     @GetMapping("/{pedidoId}")
