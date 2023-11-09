@@ -2,12 +2,16 @@ package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.api.assembler.PedidoDtoAssembler;
 import com.algaworks.algafood.api.assembler.PedidoTinyDtoAssembler;
+import com.algaworks.algafood.api.disassembler.PedidoRequestDisassembler;
 import com.algaworks.algafood.api.model.PedidoDTO;
 import com.algaworks.algafood.api.model.PedidoRequestDTO;
 import com.algaworks.algafood.api.model.PedidoTinyDTO;
+import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.algafood.domain.exception.NegocioException;
+import com.algaworks.algafood.domain.model.Pedido;
+import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.service.CadastroPedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -30,6 +34,9 @@ public class PedidoRestController {
     @Autowired
     private PedidoTinyDtoAssembler pedidoTinyDtoAssembler;
 
+    @Autowired
+    private PedidoRequestDisassembler pedidoRequestDisassembler;
+
     @GetMapping
     public List<PedidoTinyDTO> list() {
         return pedidoTinyDtoAssembler.toCollectionModel(cadastroPedidoService.list());
@@ -41,8 +48,18 @@ public class PedidoRestController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void salvar(@RequestBody @Valid PedidoRequestDTO request) {
+    public PedidoDTO salvar(@RequestBody @Valid PedidoRequestDTO request) {
+        try {
+            Pedido pedidoNovo = pedidoRequestDisassembler.toDomainModel(request);
+            Usuario usuario = new Usuario();
+            usuario.setId(1L);
+            pedidoNovo.setCliente(usuario);
 
+            pedidoNovo = cadastroPedidoService.emite(pedidoNovo);
+
+            return pedidoDtoAssembler.toModel(pedidoNovo);
+        } catch (EntidadeNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 }

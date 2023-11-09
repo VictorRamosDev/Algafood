@@ -43,12 +43,23 @@ public class Pedido {
     private Usuario cliente;
 
     @Embedded
-    private Endereco endereco;
+    private Endereco enderecoEntrega;
 
     @Enumerated(value = EnumType.STRING)
     private StatusPedido status = StatusPedido.CRIADO;
 
-    @OneToMany(mappedBy = "pedido")
-    private List<ItemPedido> itemPedido = new ArrayList<>();
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
+    private List<ItemPedido> pedidoItens = new ArrayList<>();
+
+    public void calculaValorTotal() {
+        this.setDataCriacao(OffsetDateTime.now());
+        this.getPedidoItens().forEach(ItemPedido::calculaPrecoTotal);
+
+        this.subTotal = this.getPedidoItens().stream()
+                .map(ItemPedido::getPrecoTotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        this.valorTotal = this.subTotal.add(this.taxaFrete);
+    }
 
 }

@@ -41,8 +41,8 @@ ALTER TABLE permissao auto_increment = 1;
 ALTER TABLE produto auto_increment = 1;
 ALTER TABLE restaurante auto_increment = 1;
 ALTER TABLE usuario auto_increment = 1;
-ALTER TABLE pedido auto_increment = 1;
-ALTER TABLE item_pedido auto_increment = 1;
+alter table pedido auto_increment = 1;
+alter table item_pedido auto_increment = 1;
 
 insert ignore into cozinha (id, nome) values (1, 'Tailandesa');
 insert ignore into cozinha (id, nome) values (2, 'Indiana');

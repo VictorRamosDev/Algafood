@@ -29,4 +29,14 @@ public class ItemPedido {
     @JoinColumn(name = "produto_id", nullable = false)
     private Produto produto;
 
+    public void calculaPrecoTotal() {
+        BigDecimal unityPrice = getPrecoUnitario();
+        int quantity = getQuantidade();
+
+        if (unityPrice == null) {
+            unityPrice = BigDecimal.ZERO;
+        }
+
+        this.setPrecoTotal(unityPrice.multiply(new BigDecimal(quantity)));
+    }
 }

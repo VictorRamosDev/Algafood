@@ -101,4 +101,8 @@ public class Restaurante {
     public void desassociaResponsaveis(Usuario usuario) {
         this.getResponsaveis().remove(usuario);
     }
+
+    public boolean naoAceitaFormaDePagamento(FormaPagamento formaPagamento) {
+        return !this.formasPagamento.contains(formaPagamento);
+    }
 }
