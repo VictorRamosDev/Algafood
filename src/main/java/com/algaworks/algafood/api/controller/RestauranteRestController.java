@@ -60,14 +60,14 @@ public class RestauranteRestController {
     @Autowired
     private RestauranteRequestDtoDisassembler restauranteRequestDtoDisassembler;
  
-  @JsonView(RestauranteResumo.Resumo.class)
   @GetMapping
+  @JsonView(RestauranteResumo.Resumo.class)
   public List<RestauranteDTO> listar() {
   	return restauranteDtoAssembler.toCollectionModel(restauranteService.listar());
   }
   
-  @JsonView(RestauranteResumo.ApenasNome.class)
   @GetMapping(params = "projecao=apenas-nome")
+  @JsonView(RestauranteResumo.ApenasNome.class)
   public List<RestauranteDTO> listarApenasNome() {
   	return listar();
   }
