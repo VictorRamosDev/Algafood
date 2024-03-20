@@ -42,9 +42,9 @@ public class PedidoRestController {
         return pedidoTinyDtoAssembler.toCollectionModel(cadastroPedidoService.list());
     }
 
-    @GetMapping("/{pedidoId}")
-    public PedidoDTO getSingle(@PathVariable Long pedidoId) {
-        return pedidoDtoAssembler.toModel(cadastroPedidoService.buscarOuFalhar(pedidoId));
+    @GetMapping("/{codigoPedido}")
+    public PedidoDTO getSingle(@PathVariable String codigoPedido) {
+        return pedidoDtoAssembler.toModel(cadastroPedidoService.buscarOuFalhar(codigoPedido));
     }
 
     @PostMapping

@@ -15,7 +15,7 @@ import java.time.OffsetDateTime;
 @Setter
 public class PedidoTinyDTO {
 
-    private Long id;
+    private String codigo;
 
     private BigDecimal subTotal;
 

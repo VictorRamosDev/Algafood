@@ -5,6 +5,7 @@ import com.algaworks.algafood.api.assembler.RestauranteRequestDtoAssembler;
 import com.algaworks.algafood.api.disassembler.RestauranteRequestDtoDisassembler;
 import com.algaworks.algafood.api.model.RestauranteDTO;
 import com.algaworks.algafood.api.model.RestauranteRequestDTO;
+import com.algaworks.algafood.api.model.view.RestauranteResumo;
 import com.algaworks.algafood.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
@@ -13,6 +14,7 @@ import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.CadastroCozinhaService;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 import com.algaworks.algafood.domain.service.RestauranteService;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -20,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.BeanPropertyBindingResult;
@@ -56,13 +59,57 @@ public class RestauranteRestController {
 
     @Autowired
     private RestauranteRequestDtoDisassembler restauranteRequestDtoDisassembler;
-
-    @GetMapping
-    public List<RestauranteDTO> listar() {
-//        System.out.println("Cozinha do primeiro restaurante é:");
-//        System.out.println(restaurantes.get(0).getCozinha().getNome());
-        return restauranteDtoAssembler.toCollectionModel(restauranteService.listar());
-    }
+ 
+  @JsonView(RestauranteResumo.Resumo.class)
+  @GetMapping
+  public List<RestauranteDTO> listar() {
+  	return restauranteDtoAssembler.toCollectionModel(restauranteService.listar());
+  }
+  
+  @JsonView(RestauranteResumo.ApenasNome.class)
+  @GetMapping(params = "projecao=apenas-nome")
+  public List<RestauranteDTO> listarApenasNome() {
+  	return listar();
+  }
+    
+   
+//    @GetMapping
+//    public MappingJacksonValue listar(@RequestParam(required = false) String projecao) {
+//    	List<Restaurante> restaurantes = restauranteService.listar();
+//        List<RestauranteDTO> restaurantesDTO = restauranteDtoAssembler.toCollectionModel(restaurantes);
+//        
+//        MappingJacksonValue restaurantesWrapper = new MappingJacksonValue(restaurantesDTO);
+//        
+//        restaurantesWrapper.setSerializationView(RestauranteResumo.Resumo.class);
+//        
+//        if ("apenas-nome".equals(projecao)) {
+//        	restaurantesWrapper.setSerializationView(RestauranteResumo.ApenasNome.class);
+//        } else if ("completo".equals(projecao)) {
+//        	restaurantesWrapper.setSerializationView(null);
+//        }
+//        
+//        return restaurantesWrapper;
+//        
+//    }
+    
+//    @GetMapping
+//    public List<RestauranteDTO> listar() {
+////        System.out.println("Cozinha do primeiro restaurante é:");
+////        System.out.println(restaurantes.get(0).getCozinha().getNome());
+//        return restauranteDtoAssembler.toCollectionModel(restauranteService.listar());
+//    }
+//    
+//    @JsonView(RestauranteResumo.Resumo.class)
+//    @GetMapping(params = "projecao=resumo")
+//    public List<RestauranteDTO> listarResumo() {
+//    	return listar();
+//    }
+//    
+//    @JsonView(RestauranteResumo.ApenasNome.class)
+//    @GetMapping(params = "projecao=apenas-nome")
+//    public List<RestauranteDTO> listarApenasNome() {
+//    	return listar();
+//    }
 
     @GetMapping("/{restauranteId}")
     public RestauranteDTO getSingle(@PathVariable("restauranteId") Long restauranteId) {

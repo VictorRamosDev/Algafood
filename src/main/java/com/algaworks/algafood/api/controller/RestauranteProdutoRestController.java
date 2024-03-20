@@ -40,7 +40,7 @@ public class RestauranteProdutoRestController {
     @GetMapping("/{produtoId}")
     public ProdutoDTO getSingle(@PathVariable Long restauranteId, @PathVariable("produtoId") Long produtoId) {
         Restaurante restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId);
-        Produto produto = cadastroProdutoService.buscarOuFalhar(restaurante, produtoId);
+        Produto produto = cadastroProdutoService.buscarOuFalhar(restaurante.getId(), produtoId);
 
         return produtoDtoAssembler.toModel(produto);
     }
@@ -63,7 +63,7 @@ public class RestauranteProdutoRestController {
             @Valid @RequestBody ProdutoRequestDTO request
     ){
         Restaurante restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId);
-        Produto produtoAtual = cadastroProdutoService.buscarOuFalhar(restaurante, produtoId);
+        Produto produtoAtual = cadastroProdutoService.buscarOuFalhar(restaurante.getId(), produtoId);
         produtoRequestDtoDisassembler.copyToDomainModel(request, produtoAtual);
 
         Produto produtoUpdated = cadastroProdutoService.salvar(produtoAtual);

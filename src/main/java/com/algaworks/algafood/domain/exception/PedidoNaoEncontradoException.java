@@ -5,11 +5,8 @@ package com.algaworks.algafood.domain.exception;
  */
 public class PedidoNaoEncontradoException extends EntidadeNaoEncontradaException {
 
-    public PedidoNaoEncontradoException(String message) {
-        super(message);
+    public PedidoNaoEncontradoException(String codigoPedido) {
+        super(String.format("Pedido de código %s não encontrado.", codigoPedido));
     }
 
-    public PedidoNaoEncontradoException(Long pedidoId) {
-        super(String.format("Pedido de código %d não encontrado.", pedidoId));
-    }
 }

@@ -39,8 +39,8 @@ public class CadastroPedidoService {
         return pedidoRepository.findAll();
     }
 
-    public Pedido buscarOuFalhar(Long pedidoId) {
-        return pedidoRepository.findById(pedidoId).orElseThrow(() -> new PedidoNaoEncontradoException(pedidoId));
+    public Pedido buscarOuFalhar(String codigoPedido) {
+        return pedidoRepository.findByCodigo(codigoPedido).orElseThrow(() -> new PedidoNaoEncontradoException(codigoPedido));
     }
 
     @Transactional
@@ -50,14 +50,14 @@ public class CadastroPedidoService {
 
         pedido.setTaxaFrete(pedido.getRestaurante().getTaxaFrete());
         pedido.calculaValorTotal();
-
+        
         return pedidoRepository.save(pedido);
     }
 
     private void validaItens(Pedido pedido) {
         pedido.getPedidoItens().forEach(item -> {
             Produto produto = cadastroProdutoService.buscarOuFalhar(
-                    pedido.getRestaurante(), item.getProduto().getId()
+                    pedido.getRestaurante().getId(), item.getProduto().getId()
             );
 
             item.setPedido(pedido);

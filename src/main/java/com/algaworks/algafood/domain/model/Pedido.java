@@ -3,10 +3,14 @@ package com.algaworks.algafood.domain.model;
 import lombok.Data;
 
 import javax.persistence.*;
+
+import com.algaworks.algafood.domain.exception.NegocioException;
+
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -15,6 +19,8 @@ public class Pedido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    private String codigo;
 
     private BigDecimal subTotal;
 
@@ -60,6 +66,41 @@ public class Pedido {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         this.valorTotal = this.subTotal.add(this.taxaFrete);
+    }
+    
+    private void setStatus(StatusPedido status) {
+    	if (this.getStatus().naoPodeAlterarStatusPara(status)) {
+    		throw new NegocioException(
+					String.format(
+							"O status do pedido %s não pode ser alterado de %s para %s.", 
+							this.getCodigo(), 
+							this.getStatus().getDescricao(), 
+							status.getDescricao()
+					)
+			);
+    	}
+    	
+    	this.status = status;
+    }
+    
+    public void confirma() {
+    	this.setStatus(StatusPedido.CONFIRMADO);
+		this.setDataConfirmacao(OffsetDateTime.now());
+    }
+    
+    public void entrega() {
+    	this.setStatus(StatusPedido.ENTREGUE);
+		this.setDataEntrega(OffsetDateTime.now());
+    }
+    
+    public void cancela() {
+    	this.setStatus(StatusPedido.CANCELADO);
+		this.setDataCancelamento(OffsetDateTime.now());
+    }
+    
+    @PrePersist
+    private void geraCodigo() {
+    	this.setCodigo(UUID.randomUUID().toString());
     }
 
 }

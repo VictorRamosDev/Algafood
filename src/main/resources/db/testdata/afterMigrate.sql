@@ -59,9 +59,9 @@ insert ignore into cidade (id, nome, estado_id) values (4, 'Campinas', 2);
 insert ignore into cidade (id, nome, estado_id) values (5, 'Fortaleza', 3);
 
 insert ignore into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, aberto, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro) values (1, 'Thai Gourmet', 10, 1, utc_timestamp, utc_timestamp, true, true, 1, '38400-999', 'Rua João Pinheiro', '1000', 'Centro');
-insert ignore into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, aberto) values (2, 'Thai Delivery', 9.5, 1, utc_timestamp, utc_timestamp, true, true);
-insert ignore into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, aberto) values (3, 'Tuk Tuk Comida Indiana', 15, 2, utc_timestamp, utc_timestamp, true, true);
-insert ignore into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, aberto) values (4, 'Bar do Cuscuz', 10, 3, utc_timestamp, utc_timestamp, true, true);
+insert ignore into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, aberto, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro) values (2, 'Thai Delivery', 9.5, 1, utc_timestamp, utc_timestamp, true, true, 1, '58046-900', 'Avenida Hilton Souto Maior', '6701', 'Portal do Sol');
+insert ignore into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, aberto, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro) values (3, 'Tuk Tuk Comida Indiana', 15, 2, utc_timestamp, utc_timestamp, true, true, 3, '99999-999', 'Rua dos Milagres', '54', 'Viradouro');
+insert ignore into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, aberto, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro) values (4, 'Bar do Cuscuz', 10, 3, utc_timestamp, utc_timestamp, true, true, 1, '58046-600', 'Avenida Blumenau', '400', 'Jurucuí');
 
 insert ignore into forma_pagamento (id, descricao) values (1, 'Cartão de crédito');
 insert ignore into forma_pagamento (id, descricao) values (2, 'Cartão de débito');
@@ -92,12 +92,12 @@ insert into grupos_permissoes (grupo_id, permissao_id) values (1, 1), (1, 2), (2
 
 insert ignore into usuarios_grupos(usuario_id, grupo_id) values (2, 1), (3, 1), (1, 2), (3, 2);
 
-insert ignore into restaurantes_responsaveis(restaurante_id, usuario_id) values (1, 1), (1, 2), (2, 3), (3, 5);
+insert ignore into restaurantes_responsaveis(restaurante_id, usuario_id) values (1, 1), (1, 2), (2, 3), (3, 5), (4,6), (4, 7);
 
-insert into pedido (id, restaurante_id, cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep,
+insert into pedido (id, codigo, restaurante_id, cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep,
         endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro,
         status, data_criacao, sub_total, taxa_frete, valor_total)
-    values (1, 1, 1, 1, 1, '38400-000', 'Rua Floriano Peixoto', '500', 'Apto 801', 'Brasil',
+    values (1, '0ded378e-521e-4126-b4f8-49261b55b3a3', 1, 1, 1, 1, '38400-000', 'Rua Floriano Peixoto', '500', 'Apto 801', 'Brasil',
     'CRIADO', utc_timestamp, 68.7, 10, 78.7);
 
 insert into item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
@@ -106,10 +106,10 @@ insert into item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, 
 insert into item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
     values (2, 1, 2, 2, 12.9, 25.8, 'Menos picante, por favor');
 
-insert into pedido (id, restaurante_id, cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep,
+insert into pedido (id, codigo, restaurante_id, cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep,
         endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro,
         status, data_criacao, sub_total, taxa_frete, valor_total)
-    values (2, 4, 1, 2, 1, '38400-111', 'Rua Acre', '300', 'Casa 2', 'Centro',
+    values (2, '3396683b-091a-42a4-afbd-949e24295c4a', 4, 1, 1, 1, '38400-111', 'Rua Acre', '300', 'Casa 2', 'Centro',
     'CRIADO', utc_timestamp, 18.99, 10, 28.99);
 
 insert into item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)

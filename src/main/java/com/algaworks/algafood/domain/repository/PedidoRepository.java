@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Victor Ramos
@@ -17,4 +18,7 @@ public interface PedidoRepository extends CustomJpaRepository<Pedido, Long> {
     @Query("from Pedido p join fetch p.cliente join fetch p.restaurante r join fetch r.cozinha join fetch r.endereco e " +
             "join fetch e.cidade c join fetch c.estado")
     List<Pedido> findAll();
+
+	Optional<Pedido> findByCodigo(String codigoPedido);
+    
 }
